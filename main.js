@@ -8,56 +8,68 @@
 // - 削除ボタンが表示されている（ここでは押下時の動作はつけなくてよい
 
 // ①ボタンクリックすると実行
-// ②追加したデタスクを取得する- タスクには、「ID、コメント、状態」が含まれる
-// ③取得したデータに削除ボタン付与して出力させる
+// ②追加したタスクを取得する- タスクには、「ID、コメント、状態」が含まれる
+// ③取得したデータを出力、さらに削除ボタンを追加させる
 
 //定数
 const addTaskButton = document.getElementById('add-task-button');
 const inputTodo = document.getElementById('input-todo');
 const todoLists = document.getElementById('todo-list');
 
+//tasksを保存する配列
 const tasks = [];
-
-
 
 //②ボタンクリック後の処理
 const execTodo = () => {
   ///配列にオブジェクトとしてデータを追加する
   tasks.push({
     comment: inputTodo.value,
-    status: `<button>作業中</button>`
+    status: '作業中'
   });
+  //HTML上にすでに出力してある配列を空にして、追加したデータを含めた配列内のデータを出力できるようにする
+  todoLists.innerHTML = '';
 
-  //todoListsに子要素があれば一つになるまで削除する
-  while (todoLists.firstChild) {
-    console.log(todoLists.firstChild);
-    todoLists.removeChild(todoLists.firstChild);
-  };
-
-  //③タグを追加して出力する関数
-  const showTaskList = tasks => {
-    tasks.forEach((task, index) => {
-      const taskList = document.createElement('tr');
-      const taskId = document.createElement('td');
-      const taskComment = document.createElement('td');
-      const taskStatus = document.createElement('td');
-      const deleteTaskBtn = document.createElement('td');
-
-      taskId.innerHTML = index;
-      taskComment.innerHTML = task.comment;
-      taskStatus.innerHTML = task.status;
-      deleteTaskBtn.innerHTML = `<button style="margin-left:12px;">削除</button>`;
-
-      todoLists.appendChild(taskList);
-      taskList.appendChild(taskId);
-      taskList.appendChild(taskComment);
-      taskList.appendChild(taskStatus);
-      taskList.appendChild(deleteTaskBtn);
-    });
-    inputTodo.value = '';
-  };
-  //③を呼び出す
+  //③関数を配列tasksを渡す
   showTaskList(tasks);
+};
+
+//③タグを追加して出力する関数
+const showTaskList = tasks => {
+  tasks.forEach((task, index) => {
+    const taskList = document.createElement('tr');
+    const taskId = document.createElement('td');
+    const taskComment = document.createElement('td');
+    const taskStatus = document.createElement('td');
+    const deleteTask = document.createElement('td');
+
+    taskId.innerHTML = index;
+    taskComment.innerHTML = task.comment;
+
+    todoLists.appendChild(taskList);
+    taskList.appendChild(taskId);
+    taskList.appendChild(taskComment);
+    taskList.appendChild(taskStatus);
+    taskList.appendChild(deleteTask);
+
+    //ボタンを実装する関数に引数を渡す
+    createTaskStatusButton(task, taskStatus);
+    createTaskDleteButton(task, deleteTask);
+  });
+  inputTodo.value = '';
+};
+
+//statusボタンの実装関数
+const createTaskStatusButton = (task, taskStatus) => {
+  const taskStatusBtn = document.createElement('button');
+  taskStatusBtn.innerHTML = task.status;
+  taskStatus.appendChild(taskStatusBtn);
+};
+
+//削除ボタンの実装関数
+const createTaskDleteButton = (task, deleteTask) => {
+  const deleteTaskBtn = document.createElement('button');
+  deleteTaskBtn.innerHTML = '削除';
+  deleteTask.appendChild(deleteTaskBtn);
 };
 
 //①追加ボタンをクリック
