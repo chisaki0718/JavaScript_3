@@ -1,1 +1,42 @@
-JavaScript_3
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JavaScript課題③-1 タスク追加機能">
+  <title>【JavaScript課題③】JavaScript課題③-1 タスク追加機能</title>
+</head>
+
+<body>
+  <h1>ToDoリスト</h1>
+
+  <form action="">
+    <input type="radio" name="status" value="すべて" checked>すべて
+    <input type="radio" name="status" value="作業中">作業中
+    <input type="radio" name="status" value="完了">完了
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>コメント</th>
+        <th>状態</th>
+      </tr>
+    </thead>
+    <tbody id="todo-list">
+    </tbody>
+  </table>
+  <h2>新規タスクの追加</h2>
+  <form>
+    <div>
+      <input type="text" style="margin-right: 16px;" id="input-todo" value=""><button id="add-task-button"
+        type="button">追加</button>
+    </div>
+  </form>
+  <script src="main.js"></script>
+</body>
+
+</html>
