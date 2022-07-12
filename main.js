@@ -1,8 +1,8 @@
 // 【要件】
 /*
-- 削除ボタン押下時にそのタスクを削除できる
-- タスク削除時はIDが振り直される
-- 削除後、新たにタスクを追加するとIDが連番となっている
+- タスクの状態を変更できる
+- 作業中の状態でボタンをクリックすると完了へ変更される
+- 完了の状態でボタンをクリックすると作業中へ変更される
 */
 
 //定数
@@ -53,6 +53,11 @@ const showTaskList = tasks => {
     deleteTask.addEventListener('click', () => {
       deleteTaskList(index);
     });
+
+    //status変更ボタンクッリク時の関数の呼び出し
+    taskStatus.addEventListener('click',() => {
+      changeTaskStatus(task, taskStatus);
+    });
   });
   inputTodo.value = '';
 };
@@ -74,6 +79,20 @@ const createTaskDleteButton = (task, deleteTask) => {
 //削除ボタンをクリックしたらタスクを削除する関数
 const deleteTaskList = (index) => {
   tasks.splice(index,1);
+  showTaskList(tasks);
+};
+
+//status変更ボタンをクリックしたらstatusを変更する関数
+const changeTaskStatus = (task, taskStatus) => {
+  //作業中であれば完了へ、完了であれば作業中へ変更する
+  if (task.status === '作業中'){
+    task.status = '完了';
+  } else if (task.status === '完了'){
+    task.status = '作業中'
+  }
+  //htmlの内容を変更後の内容に書き換える
+  taskStatus.innerHTML = task.status;
+  //出力
   showTaskList(tasks);
 };
 
