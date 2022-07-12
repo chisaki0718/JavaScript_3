@@ -56,7 +56,7 @@ const showTaskList = tasks => {
 
     //status変更ボタンクッリク時の関数の呼び出し
     taskStatus.addEventListener('click',() => {
-      changeStatusButton(task, taskStatus);
+      changeTaskStatus(task, taskStatus);
     });
   });
   inputTodo.value = '';
@@ -83,11 +83,11 @@ const deleteTaskList = (index) => {
 };
 
 //status変更ボタンをクリックしたらstatusを変更する関数
-const changeStatusButton = (task, taskStatus) => {
+const changeTaskStatus = (task, taskStatus) => {
   //作業中であれば完了へ、完了であれば作業中へ変更する
   if (task.status === '作業中'){
     task.status = '完了';
-  }else if (task.status === '完了'){
+  } else if (task.status === '完了'){
     task.status = '作業中'
   }
   //htmlの内容を変更後の内容に書き換える
