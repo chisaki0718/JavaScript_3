@@ -17,6 +17,7 @@ const todoLists = document.getElementById('todo-list');
 const allTasks = document.getElementById('all-tasks');
 const workingTasks = document.getElementById('working-tasks');
 const doneTasks = document.getElementById('done-tasks');
+const radioButtons = document.getElementsByName('status')
 
 //tasksを保存する配列
 const tasks = [];
@@ -28,10 +29,6 @@ const execTodo = () => {
     comment: inputTodo.value,
     status: '作業中'
   });
-
-  //③関数を配列tasksを渡す
-  showTaskList(tasks);
-
   radioChange();
 };
 
@@ -66,13 +63,8 @@ const showTaskList = tasks => {
 
     //status変更ボタンクリック時の関数の呼び出し
     taskStatus.addEventListener('click', () => {
-      const checkedRadio = document.getElementsByName('status');
-      if (checkedRadio[0].checked) {
       changeTaskStatus(task, taskStatus);
-      } else if (checkedRadio[1].checked || checkedRadio[2].checked) {
-        changeTaskStatus2(task, taskStatus)
-      }
-    });
+    })
   });
   inputTodo.value = '';
 };
@@ -97,7 +89,7 @@ const deleteTaskList = (index) => {
   showTaskList(tasks);
 };
 
-//status変更ボタンをクリックしたらstatusを変更する関数
+//すべてのラジオボタンにチェック時、status変更ボタンをクリックしたらステータスを変更する関数
 const changeTaskStatus = (task, taskStatus) => {
   //作業中であれば完了へ、完了であれば作業中へ変更する
   if (task.status === '作業中') {
@@ -108,54 +100,37 @@ const changeTaskStatus = (task, taskStatus) => {
   //htmlの内容を変更後の内容に書き換える
   taskStatus.innerHTML = task.status;
   //出力
-  showTaskList(tasks);
+  radioChange(tasks)
 };
 
-//status変更ボタンをクリックしたらstatusを変更する関数（作業中と完了時）
-const changeTaskStatus2 = (task, taskStatus) => {
-  //作業中であれば完了へ、完了であれば作業中へ変更する
-  if (task.status === '作業中') {
-    task.status = '完了';
-    const filterdoing = tasks.filter((task) => {
-      return task.status === '作業中';
-    });
-    return showTaskList(filterdoing);
-  } else if (task.status === '完了') {
-    task.status = '作業中'
-    const filterDone = tasks.filter((task) => {
-      return task.status === '完了';
-    });
-    return showTaskList(filterDone);
-  }
-  //htmlの内容を変更後の内容に書き換える
-  taskStatus.innerHTML = task.status;
-  //出力
-  showTaskList(tasks);
-};
-
-//それぞれのradioボタンがクリックされた時の関数
+//チェックボタンの位置によって違う値を渡してshowTaskList関数を発火する
 const radioChange = () => {
-  //作業中ラジオボタン
-  workingTasks.addEventListener('click', () => {
+  // 作業中のラジオボタンがチェックされている場合
+  if (radioButtons[1].checked) {
     const filterdoing = tasks.filter((task) => {
-      return task.status === '作業中';
-    });
+      return task.status === '作業中'
+    })
     //ステータスの作業中のみが出力されるよう作業中の値を渡す
-    return showTaskList(filterdoing);
-  });
-  //完了ラジオボタン
-  doneTasks.addEventListener('click', () => {
+    return showTaskList(filterdoing)
+  // 完了のラジオボタンがチェックされている場合
+  } else if (radioButtons[2].checked) {
     const filterDone = tasks.filter((task) => {
-      return task.status === '完了';
-    });
+      return task.status === '完了'
+    })
     //ステータスの完了のみが出力されるよう作業中の値を渡す
-    return showTaskList(filterDone);
-  });
-  //
-  allTasks.addEventListener('click', () => {
+    return showTaskList(filterDone)
+  //すべてのラジオボタンがチェックされている場合
+  } else {
     return showTaskList(tasks)
-  });
+  }
 }
+
+//ラジオボタンの状態が変わったときにもradioChange関数を呼び出す
+radioButtons.forEach(radio => {
+  radio.addEventListener('change', () => {
+    radioChange();
+  });
+});
 
 //①追加ボタンをクリック
 addTaskButton.addEventListener('click', execTodo);
