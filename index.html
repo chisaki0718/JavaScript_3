@@ -5,17 +5,17 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="JavaScript課題③-3 タスク状態変更機能">
-  <title>【JavaScript課題③】JavaScript課題③-3 タスク状態変更機能</title>
+  <meta name="description" content="JavaScript課題③-4 タスク表示/非表示切り替え機能">
+  <title>【JavaScript課題③】JavaScript課題③-4 タスク表示/非表示切り替え機能</title>
 </head>
 
 <body>
   <h1>ToDoリスト</h1>
 
   <form action="">
-    <input type="radio" name="status" value="すべて" checked>すべて
-    <input type="radio" name="status" value="作業中">作業中
-    <input type="radio" name="status" value="完了">完了
+    <input type="radio" id="all-tasks" name="status" value="すべて" checked="checked"><label for="all-tasks">すべて</label>
+    <input type="radio" id="working-tasks" name="status" value="作業中"><label for="working-tasks">作業中</label>
+    <input type="radio" id="done-tasks" name="status" value="完了"><label for="done-tasks">完了</label>
   </form>
 
   <table>
