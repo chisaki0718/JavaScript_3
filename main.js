@@ -20,30 +20,36 @@ const doneTasks = document.getElementById('done-tasks');
 const radioButtons = document.getElementsByName('status')
 
 //tasksを保存する配列
-const tasks = [];
+let tasks = [];
+let objectNum = 0;
 
 //②追加ボタンクリック後の処理
 const execTodo = () => {
   ///配列にオブジェクトとしてデータを追加する
   tasks.push({
+    id: objectNum,
     comment: inputTodo.value,
     status: '作業中'
   });
+
   radioChange();
+
+  objectNum++;
+  tasks.id = objectNum;
 };
 
 //③タグを追加して出力する関数
-const showTaskList = tasks => {
+const showTaskList = filteredTasks => {
   //HTML上にすでに出力してある配列を空にして、追加したデータを含めた配列内のデータを出力できるようにする
   todoLists.innerHTML = '';
-  tasks.forEach((task, index) => {
+  filteredTasks.forEach((task) => {
     const taskList = document.createElement('tr');
     const taskId = document.createElement('td');
     const taskComment = document.createElement('td');
     const taskStatus = document.createElement('td');
     const deleteTask = document.createElement('td');
 
-    taskId.innerHTML = index;
+    taskId.innerHTML = task.id;
     taskComment.innerHTML = task.comment;
 
     todoLists.appendChild(taskList);
@@ -58,7 +64,20 @@ const showTaskList = tasks => {
 
     //削除ボタンクリック時の関数呼び出し
     deleteTask.addEventListener('click', () => {
-      deleteTaskList(index);
+      /*
+      削除ボタンをclick時に全体の配列から一致するidを探す
+      (filteredTasksだとfilterされた配列が対象になるため全体の配列が適切)
+      */
+      const searchTasks = tasks.forEach((searchTask, index) => {
+        /*
+        tasks配列をforEachでループして
+        clickされたタスクのid(task.id)とid(searchTask.id)が
+        一致したらそのタスクのindex番号を渡す（spliceの第一引数）
+        */
+        if (searchTask.id == task.id) {
+          deleteTaskList(index);
+        }
+      })
     });
 
     //status変更ボタンクリック時の関数の呼び出し
@@ -84,9 +103,9 @@ const createTaskDleteButton = (task, deleteTask) => {
 };
 
 //削除ボタンをクリックしたらタスクを削除する関数
-const deleteTaskList = (index) => {
-  tasks.splice(index, 1);
-  showTaskList(tasks);
+const deleteTaskList = taskIndex => {
+  tasks.splice(taskIndex, 1);
+  radioChange()
 };
 
 //すべてのラジオボタンにチェック時、status変更ボタンをクリックしたらステータスを変更する関数
@@ -100,7 +119,7 @@ const changeTaskStatus = (task, taskStatus) => {
   //htmlの内容を変更後の内容に書き換える
   taskStatus.innerHTML = task.status;
   //出力
-  radioChange(tasks)
+  radioChange()
 };
 
 //チェックボタンの位置によって違う値を渡してshowTaskList関数を発火する
