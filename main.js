@@ -20,7 +20,7 @@ const doneTasks = document.getElementById('done-tasks');
 const radioButtons = document.getElementsByName('status')
 
 //tasksを保存する配列
-let tasks = [];
+const tasks = [];
 let objectNum = 0;
 
 //②追加ボタンクリック後の処理
